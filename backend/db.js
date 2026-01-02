@@ -9,4 +9,3 @@ const pool = new Pool({
 });
 
 module.exports = pool;
-// Note: Replace "YOUR_PASSWORD" with your actual PostgreSQL password.
