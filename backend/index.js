@@ -15,6 +15,11 @@ app.post("/consent", async (req, res) => {
     const { text } = req.body;
 
     const parsed = parseConsent(text);
+    if (!parsed.data_type || !parsed.purpose) {
+  return res.status(400).json({
+    error: "Unable to parse consent text. Unsupported data type or purpose."
+  });
+}
     const policy = generatePolicy(parsed);
 
     const consentRes = await pool.query(
@@ -22,15 +27,16 @@ app.post("/consent", async (req, res) => {
       [text]
     );
 
-    const parsedRes = await pool.query(
-      "INSERT INTO parsed_consents (consent_id, data_type, purpose, expires_at) VALUES ($1,$2,$3,$4)",
-      [
-        consentRes.rows[0].id,
-        parsed.data_type,
-        parsed.purpose,
-        parsed.expires_at
-      ]
-    );
+const parsedRes = await pool.query(
+  "INSERT INTO parsed_consents (consent_id, data_type, purpose, expires_at) VALUES ($1,$2,$3,$4) RETURNING id",
+  [
+    consentRes.rows[0].id,
+    parsed.data_type,
+    parsed.purpose,
+    parsed.expires_at
+  ]
+);
+
 
     await pool.query(
       "INSERT INTO policies (parsed_consent_id, effect, expires_at) VALUES ($1,$2,$3)",
