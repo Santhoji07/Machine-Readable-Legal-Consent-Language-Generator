@@ -10,6 +10,8 @@ router.post("/", async (req, res) => {
 
     const parsed = parseConsent(text);
     const policy = generatePolicy(parsed);
+    const readableConsent = ruleToText(policy);
+
 
     const consentRes = await pool.query(
       "INSERT INTO consents (original_text) VALUES ($1) RETURNING id",
