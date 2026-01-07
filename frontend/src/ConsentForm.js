@@ -31,10 +31,18 @@ function ConsentForm() {
       <button onClick={submitConsent}>Submit Consent</button>
 
       {response && (
-        <pre style={{ background: "#eee", padding: "10px" }}>
-          {JSON.stringify(response, null, 2)}
-        </pre>
-      )}
+  <div style={{ background: "#eee", padding: "10px", marginTop: "10px" }}>
+    <h4>Parsed Consent</h4>
+    <pre>{JSON.stringify(response.parsed, null, 2)}</pre>
+
+    <h4>Generated Policy</h4>
+    <pre>{JSON.stringify(response.policy, null, 2)}</pre>
+
+    <h4>Readable Consent (Bidirectional Translation)</h4>
+    <p><strong>{response.readableConsent}</strong></p>
+  </div>
+)}
+
     </div>
   );
 }
