@@ -16,33 +16,30 @@ function ConsentForm() {
   };
 
   return (
-    <div>
+    <div className="card">
       <h2>Submit Legal Consent</h2>
 
       <textarea
         rows="4"
-        cols="60"
+        placeholder="Enter legal consent text..."
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Enter legal consent text..."
       />
 
-      <br />
       <button onClick={submitConsent}>Submit Consent</button>
 
       {response && (
-  <div style={{ background: "#eee", padding: "10px", marginTop: "10px" }}>
-    <h4>Parsed Consent</h4>
-    <pre>{JSON.stringify(response.parsed, null, 2)}</pre>
+        <div className="result-box">
+          <h4>Parsed Consent</h4>
+          <pre>{JSON.stringify(response.parsed, null, 2)}</pre>
 
-    <h4>Generated Policy</h4>
-    <pre>{JSON.stringify(response.policy, null, 2)}</pre>
+          <h4>Generated Policy</h4>
+          <pre>{JSON.stringify(response.policy, null, 2)}</pre>
 
-    <h4>Readable Consent (Bidirectional Translation)</h4>
-    <p><strong>{response.readableConsent}</strong></p>
-  </div>
-)}
-
+          <h4>Readable Consent</h4>
+          <p className="success">{response.readableConsent}</p>
+        </div>
+      )}
     </div>
   );
 }

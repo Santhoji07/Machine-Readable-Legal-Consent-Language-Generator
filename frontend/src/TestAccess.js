@@ -3,23 +3,22 @@ import React, { useState } from "react";
 function TestAccess() {
   const [dataType, setDataType] = useState("");
   const [purpose, setPurpose] = useState("");
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState(null);
 
   const testAccess = async () => {
     try {
       const res = await fetch(
         `http://localhost:3000/data/${dataType}?purpose=${purpose}`
       );
-
       const data = await res.json();
-      setResult(JSON.stringify(data, null, 2));
-    } catch (err) {
+      setResult(data.message || JSON.stringify(data));
+    } catch {
       setResult("Error testing access");
     }
   };
 
   return (
-    <div>
+    <div className="card">
       <h2>Test Data Access</h2>
 
       <input
@@ -34,13 +33,18 @@ function TestAccess() {
         onChange={(e) => setPurpose(e.target.value)}
       />
 
-      <br />
       <button onClick={testAccess}>Test Access</button>
 
       {result && (
-        <pre style={{ background: "#eee", padding: "10px" }}>
-          {result}
-        </pre>
+        <div className="result-box">
+          <p
+            className={
+              result.toLowerCase().includes("granted") ? "success" : "error"
+            }
+          >
+            {result}
+          </p>
+        </div>
       )}
     </div>
   );
