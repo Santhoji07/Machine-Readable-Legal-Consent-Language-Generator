@@ -21,7 +21,7 @@ function ConsentForm() {
 
       <textarea
         rows="4"
-        placeholder="Enter legal consent text..."
+        placeholder="Consent (I allow my email to be used for marketing for 6 months)"
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
